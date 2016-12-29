@@ -5,6 +5,8 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import re
 import json
+import os
+import errno
 
 import sys
 
@@ -57,10 +59,10 @@ def printImage(url, count, outputDir):
 		goodUrl = switchMP4toGIF(url)
 
 	try:
-			os.makedirs(outputDir)
-		except OSError as exception:
-			if exception.errno != errno.EEXIST:
-				raise
+		os.makedirs(outputDir)
+	except OSError as exception:
+		if exception.errno != errno.EEXIST:
+			raise
 
 	f = open(outputDir + str(newCount) + imageType,'wb')
 	print('printing {0}'.format(goodUrl))
@@ -167,7 +169,7 @@ elif (len(sys.argv) == 2):
 	
 	
 else:
-	tumUrl = input("Enter the Tumblr url to creep on: ")
+	tumUrl = input("Enter the Imgur url to creep on: ")
 	outputDir = input("Enter the folder name to save to: ")
 	pageCount = int(input("Enter many pages do you want to creep through: "))
 	
