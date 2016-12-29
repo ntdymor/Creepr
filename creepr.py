@@ -5,6 +5,8 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import re
 import json
+import os
+import errno
 
 import sys
 
@@ -44,6 +46,12 @@ def getImageType(url):
 	
 def printImage(url, count, outputDir):
 	newCount = count + 1
+	try:
+		os.makedirs(outputDir)
+	except OSError as exception:
+		if exception.errno != errno.EEXIST:
+			raise
+
 	f = open(outputDir + str(newCount) + getImageType(url),'wb')
 	f.write(urlopen(url).read())
 	f.close()
@@ -125,20 +133,12 @@ def prepareUrl(url):
 	
 def prepareOutputDir(outputDir):
 	safeOutputDir = outputDir
-	outputDirEnding = "//"
+	outputDirEnding = "/"
 	if(not outputDir.endswith(outputDirEnding)):
 		safeOutputDir = safeOutputDir + outputDirEnding
 	
 	return safeOutputDir
 
-			
-#archiveObj = getHTMLObject('http://goblintinkering.tumblr.com/archive')
-#followLinks(archiveObj)
-
-#url = 'http://lovelyinsects.tumblr.com/'
-#readSite(url, 10)
-
-#print(sys.argv[1])
 
 tumUrl = ""
 pageCount = 0

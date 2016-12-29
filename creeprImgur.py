@@ -56,6 +56,12 @@ def printImage(url, count, outputDir):
 		imageType = '.gif'
 		goodUrl = switchMP4toGIF(url)
 
+	try:
+			os.makedirs(outputDir)
+		except OSError as exception:
+			if exception.errno != errno.EEXIST:
+				raise
+
 	f = open(outputDir + str(newCount) + imageType,'wb')
 	print('printing {0}'.format(goodUrl))
 	f.write(urlopen(goodUrl).read())
